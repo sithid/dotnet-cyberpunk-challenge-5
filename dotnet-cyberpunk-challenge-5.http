@@ -1,0 +1,6 @@
+@dotnet_cyberpunk_challenge_5_HostAddress = http://localhost:5160
+
+GET {{dotnet_cyberpunk_challenge_5_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
