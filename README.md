@@ -77,3 +77,4 @@ If you manage to achieve **full Admin capability**, you’ve unlocked a new pote
 
 The following is the architecture as we understand it, involving multiple integrated systems, including **Pariah-Nexus API**, **Athena Security System**, and your **web API**. This architecture will help you connect the dots for accessing and storing valuable data while maintaining an efficient and organized infrastructure.
 
+![Architecture Diagram](./docs-assets/Cyberpunk%20(student)%20-%20Pariah%20Nexus%20API%20(1).png)
