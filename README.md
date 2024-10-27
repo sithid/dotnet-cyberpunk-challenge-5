@@ -8,7 +8,7 @@ You made it! Glad to see you here, Netrunner. This is our last challenge before 
 
 We need to identify a vulnerable location within Arasaka's **Pariah-Nexus API** that we can exploit for subnet access. Our intel suggests that the **Athena security system** is active in the network and will immediately detect intrusion attempts. Fortunately, the Pariah-Nexus API has an endpoint that accesses Athena to gather recent security logs about the devices in question. This might just be the key to your mission. ***We've gathered some intel that could point you in the right direction.***
 
-We've also learned from an informant that there’s a code hidden in the data returned by the API—a code we can use to add ourselves to the AdminGroup. Reconnaissance is the bare minimum, but gaining access to the AdminGroup will make this gig perfect. Most importantly, we need you to build a web API that our team can use to gain full access to the Pariah-Nexus API. Let’s get to work.
+We've also learned from an informant that there’s a code hidden in the data returned by the API—a code we can use to add ourselves to the AdminGroup. Reconnaissance is the bare minimum, but gaining access to the AdminGroup will make this gig perfect. Most importantly, we need you to build a web API that our team can use to gain full access to the Pariah-Nexus API. Note that the Pariah-Nexus API resets itself at midnight, and you may notice a service interruption from midnight to approximately 12:10. Let’s get to work.
 
 The **Pariah-Nexus API** is located at:
 
