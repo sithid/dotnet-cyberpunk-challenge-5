@@ -2,7 +2,7 @@
 {
     public class AthenaDataEvent
     {
-        public int id {  get; set; }
+        public int id { get; set; }
         public int userId { get; set; }
         public string ipAddress {  get; set; }
         public string macAddress {  get; set; }

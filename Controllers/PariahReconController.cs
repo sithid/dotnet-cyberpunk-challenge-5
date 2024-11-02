@@ -1,20 +1,26 @@
 ﻿using dotnet_cyberpunk_challenge_5.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.Json;
 using Newtonsoft.Json;
+using System.Diagnostics.Metrics;
+using System.Linq.Expressions;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace dotnet_cyberpunk_challenge_5.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PariahArasakaClusterController : ControllerBase
+    public class PariahReconController : ControllerBase
     {
         private readonly DataContext _dataContext;
 
         public HttpClient pariahClient { get; set; }
 
-        public PariahArasakaClusterController( DataContext context )
+        public PariahReconController( DataContext context )
         {
             _dataContext = context;
 
@@ -23,8 +29,8 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
             pariahClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        [HttpGet]
-        public IActionResult GetArasakaClusters()
+        [HttpGet("GetArasakaClusters")]
+        public async Task<ActionResult<IEnumerable<ArasakaCluster>>> GetArasakaClusters()
         {
             try
             {
@@ -32,15 +38,13 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
 
                 if( response.IsSuccessStatusCode)
                 {
-                    string json = response.Content.ReadAsStringAsync().Result;
-
-                    List<ArasakaCluster> clusters = JsonConvert.DeserializeObject<List<ArasakaCluster>>(json);
+                    List<ArasakaCluster> clusters = response.Content.ReadFromJsonAsync<List<ArasakaCluster>>().Result;
 
                     return Ok(clusters);
                 }
                 else
                 {
-                    return BadRequest("Something went wrong in the request.  What'd you fuck up?");
+                    return BadRequest($"There was an issue returning the clusters: {response.StatusCode}");
                 }                
             }
             catch (Exception ex)
@@ -49,8 +53,8 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetArasakaCluster( int id )
+        [HttpGet("GetArasakaCluster/{id}")]
+        public async Task<ActionResult<ArasakaCluster>> GetArasakaCluster( int id )
         {
             try
             {
@@ -58,21 +62,24 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string json = response.Content.ReadAsStringAsync().Result; // if you print this string, you will see the json collection for processes with data
+                    ArasakaCluster updatedCluster = response.Content.ReadFromJsonAsync<ArasakaCluster>().Result;
 
-                    ArasakaCluster cluster = JsonConvert.DeserializeObject<ArasakaCluster>(json); // when deserialized, processes is null
-
-                    return Ok(cluster);
+                    return Ok(updatedCluster);
                 }
                 else
                 {
-                    return BadRequest("Something went wrong in the request.  What'd you fuck up?");
+                    return BadRequest($"The cluster you seek is missing or invalid: {response.StatusCode} ");
                 }
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        private bool ClusterExists(int id)
+        {
+            return _dataContext.ArasakaClusters.Any(c => c.id == id);
         }
     }
 }

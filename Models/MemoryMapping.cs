@@ -2,6 +2,7 @@
 {
     public class MemoryMapping
     {
+        public int id { get; set; }
         public string memoryType {  get; set; }
         public float memorySizeGb { get; set; }
         public int memorySpeedMhz { get; set; }
