@@ -40,6 +40,23 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
                 {
                     List<ArasakaCluster> clusters = response.Content.ReadFromJsonAsync<List<ArasakaCluster>>().Result;
 
+                    if( clusters != null )
+                    {
+                        foreach( ArasakaCluster newCluster in clusters )
+                        {
+                            ArasakaCluster oldCluster = await _dataContext.ArasakaClusters.FindAsync(newCluster.id);
+
+                            if (oldCluster != null)
+                            {
+                                _dataContext.Entry(oldCluster).CurrentValues.SetValues(newCluster);
+                            }
+                            else
+                                _dataContext.ArasakaClusters.Add(newCluster);
+                        }
+
+                        _dataContext.SaveChanges();
+                    }
+
                     return Ok(clusters);
                 }
                 else

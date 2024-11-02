@@ -27,7 +27,12 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
         [HttpGet("GetArasakaCluster/{id}")]
         public async Task<ActionResult<ArasakaCluster>> GetArasakaCluster(int id)
         {
-            var cluster = await _dataContext.ArasakaClusters.FindAsync(id);
+            var cluster = await _dataContext.ArasakaClusters
+                .Include(c => c.devices)
+                .ThenInclude(d => d.processes)
+                .Include(c => c.devices)
+                .ThenInclude(d => d.memoryMappings)
+                .FirstOrDefaultAsync();
 
             if (cluster == null)
             {
