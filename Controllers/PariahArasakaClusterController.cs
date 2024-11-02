@@ -36,7 +36,7 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
 
                     List<ArasakaCluster> clusters = JsonConvert.DeserializeObject<List<ArasakaCluster>>(json);
 
-                    return Ok(json);
+                    return Ok(clusters);
                 }
                 else
                 {
@@ -62,7 +62,7 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
 
                     ArasakaCluster cluster = JsonConvert.DeserializeObject<ArasakaCluster>(json); // when deserialized, processes is null
 
-                    return Ok(json);
+                    return Ok(cluster);
                 }
                 else
                 {

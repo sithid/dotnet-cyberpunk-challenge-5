@@ -9,7 +9,7 @@
         public string region {  get; set; }
         public string athenaAccessKey {  get; set; }
         public int clusterId {  get; set; }        
-        public List<Process>? processess {  get; set; }
+        public List<Process>? processes {  get; set; }
         public List<MemoryMapping>? memoryMappings { get; set; }
         public List<AthenaDataEvent>? dataEvents { get; set; }
     }
