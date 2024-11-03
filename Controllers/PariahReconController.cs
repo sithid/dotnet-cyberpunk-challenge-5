@@ -75,9 +75,11 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
                                         clusterId = d.clusterId,
                                     };
 
-                                    if (deviceToAdd.processes != null)
+                                    if (d.processes != null)
                                     {
-                                        foreach (Process p in deviceToAdd.processes)
+                                        deviceToAdd.processes = new List<Process>();
+
+                                        foreach (Process p in d.processes)
                                         {
                                             var proc = new Process()
                                             {
@@ -93,9 +95,11 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
                                         }
                                     }
 
-                                    if (deviceToAdd.memoryMappings != null)
+                                    if (d.memoryMappings != null)
                                     {
-                                        foreach (MemoryMapping m in deviceToAdd.memoryMappings)
+                                        deviceToAdd.memoryMappings = new List<MemoryMapping>();
+
+                                        foreach (MemoryMapping m in d.memoryMappings)
                                         {
                                             var mapping = new MemoryMapping()
                                             {
@@ -118,9 +122,11 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
                                         }
                                     }
 
-                                    if (deviceToAdd.dataEvents != null)
+                                    if (d.dataEvents != null)
                                     {
-                                        foreach (AthenaDataEvent e in deviceToAdd.dataEvents)
+                                        deviceToAdd.dataEvents = new List<AthenaDataEvent>();
+
+                                        foreach (AthenaDataEvent e in d.dataEvents)
                                         {
                                             var dataEvent = new AthenaDataEvent()
                                             {
@@ -217,8 +223,10 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
                                 clusterId = d.clusterId,
                             };
 
-                            if (deviceToAdd.processes != null)
+                            if (d.processes != null)
                             {
+                                deviceToAdd.processes = new List<Process>();
+
                                 foreach (Process p in deviceToAdd.processes)
                                 {
                                     var proc = new Process()
@@ -235,8 +243,10 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
                                 }
                             }
 
-                            if (deviceToAdd.memoryMappings != null)
+                            if (d.memoryMappings != null)
                             {
+                                deviceToAdd.memoryMappings = new List<MemoryMapping>();
+
                                 foreach (MemoryMapping m in deviceToAdd.memoryMappings)
                                 {
                                     var mapping = new MemoryMapping()
@@ -260,9 +270,11 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
                                 }
                             }
 
-                            if (deviceToAdd.dataEvents != null)
+                            if (d.dataEvents != null)
                             {
-                                foreach (AthenaDataEvent e in deviceToAdd.dataEvents)
+                                deviceToAdd.dataEvents = new List<AthenaDataEvent>();
+
+                                foreach (AthenaDataEvent e in d.dataEvents)
                                 {
                                     var dataEvent = new AthenaDataEvent()
                                     {

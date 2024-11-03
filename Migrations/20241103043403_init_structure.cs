@@ -5,7 +5,7 @@
 namespace dotnet_cyberpunk_challenge_5.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class init_structure : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

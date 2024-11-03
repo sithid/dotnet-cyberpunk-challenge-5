@@ -30,11 +30,11 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
             var cluster = await _dataContext.ArasakaClusters
                 .Include(c => c.devices)
                 .ThenInclude(d => d.processes)
-                .Include(c => c.devices)
+                .ThenInclude(d => d.)
                 .ThenInclude(d => d.memoryMappings)
                 .Include(c => c.devices)
                 .ThenInclude(d => d.dataEvents)
-                .FirstOrDefaultAsync( c => c.id == id);
+                .FirstOrDefaultAsync(c => c.id == id);
 
             if (cluster == null)
             {
