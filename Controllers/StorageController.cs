@@ -30,7 +30,7 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
             var cluster = await _dataContext.ArasakaClusters
                 .Include(c => c.devices)
                 .ThenInclude(d => d.processes)
-                .ThenInclude(d => d.)
+                .Include( c => c.devices)
                 .ThenInclude(d => d.memoryMappings)
                 .Include(c => c.devices)
                 .ThenInclude(d => d.dataEvents)

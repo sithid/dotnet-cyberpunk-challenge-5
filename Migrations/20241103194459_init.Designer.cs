@@ -12,8 +12,8 @@ using dotnet_cyberpunk_challenge_5.Models;
 namespace dotnet_cyberpunk_challenge_5.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241103043403_init_structure")]
-    partial class init_structure
+    [Migration("20241103194459_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
