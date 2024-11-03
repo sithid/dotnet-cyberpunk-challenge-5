@@ -4,6 +4,7 @@
     {
         public int id { get; set; }
         public string name {  get; set; }
+        public string publicKey { get; set; }
         public string architecture {  get; set; }
         public string processorType {  get; set; }
         public string region {  get; set; }

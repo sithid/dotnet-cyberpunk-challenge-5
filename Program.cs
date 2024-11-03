@@ -4,8 +4,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<DataContext>(opt =>
-                opt.UseInMemoryDatabase("PariahData"));
+builder.Services.AddDbContextPool<DataContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PariahDataConnection")));
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

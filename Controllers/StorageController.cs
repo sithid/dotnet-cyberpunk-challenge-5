@@ -32,14 +32,16 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
                 .ThenInclude(d => d.processes)
                 .Include(c => c.devices)
                 .ThenInclude(d => d.memoryMappings)
-                .FirstOrDefaultAsync();
+                .Include(c => c.devices)
+                .ThenInclude(d => d.dataEvents)
+                .FirstOrDefaultAsync( c => c.id == id);
 
             if (cluster == null)
             {
                 return NotFound();
             }
 
-            return cluster;
+            return Ok(cluster);
         }
     }
 }
