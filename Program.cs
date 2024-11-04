@@ -1,17 +1,22 @@
 using dotnet_cyberpunk_challenge_5.Models;
+using dotnet_cyberpunk_challenge_5.Repositories;
+using dotnet_cyberpunk_challenge_5.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContextPool<DataContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("PariahDataConnection")));
-
+    options.UseSqlServer(builder.Configuration.GetConnectionString("PariahDataConnection"))
+    
+);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IDatabaseRepository, DatabaseRepository>();
 
 var app = builder.Build();
 

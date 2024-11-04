@@ -1,4 +1,6 @@
 ﻿using dotnet_cyberpunk_challenge_5.Models;
+using dotnet_cyberpunk_challenge_5.Repositories;
+using dotnet_cyberpunk_challenge_5.Repositories.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,37 +11,33 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
     [ApiController]
     public class StorageController : ControllerBase
     {
-        private readonly DataContext _dataContext;
+        private readonly IDatabaseRepository _dataRepository;
 
         public HttpClient pariahClient { get; set; }
 
-        public StorageController(DataContext context)
+        public StorageController(IDatabaseRepository _dataRepo)
         {
-            _dataContext = context;
+            _dataRepository = _dataRepo;
         }
 
         [HttpGet("GetArasakaClusters")]
         public async Task<ActionResult<IEnumerable<ArasakaCluster>>> GetArasakaClusters()
         {
-            return await _dataContext.ArasakaClusters.ToListAsync();
+            List<ArasakaCluster> clusters = await _dataRepository.GetArasakaClustersAsync();
+
+            if (clusters.Any())
+                return Ok(clusters);
+            else
+                return NotFound("No clusters found.");
         }
 
         [HttpGet("GetArasakaCluster/{id}")]
         public async Task<ActionResult<ArasakaCluster>> GetArasakaCluster(int id)
         {
-            var cluster = await _dataContext.ArasakaClusters
-                .Include(c => c.devices)
-                .ThenInclude(d => d.processes)
-                .Include( c => c.devices)
-                .ThenInclude(d => d.memoryMappings)
-                .Include(c => c.devices)
-                .ThenInclude(d => d.dataEvents)
-                .FirstOrDefaultAsync(c => c.id == id);
+            var cluster = await _dataRepository.GetArasakaClusterAsync(id);
 
             if (cluster == null)
-            {
-                return NotFound();
-            }
+                return NotFound($"Cluster {id} was not found.");
 
             return Ok(cluster);
         }

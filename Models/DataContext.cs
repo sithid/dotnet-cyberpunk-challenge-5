@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 
 namespace dotnet_cyberpunk_challenge_5.Models
 {
@@ -13,6 +14,7 @@ namespace dotnet_cyberpunk_challenge_5.Models
 
         public DataContext( DbContextOptions<DataContext> options ) : base( options )
         {
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
