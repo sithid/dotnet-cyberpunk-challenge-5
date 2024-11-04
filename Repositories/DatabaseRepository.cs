@@ -109,7 +109,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
 
             if (deviceToCopy.processes != null)
             {
-                deviceToCopy.processes = new List<Process>();
+                deviceNoId.processes = new List<Process>();
 
                 foreach (Process p in deviceToCopy.processes)
                 {
@@ -120,7 +120,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
 
             if (deviceToCopy.memoryMappings != null)
             {
-                deviceToCopy.memoryMappings = new List<MemoryMapping>();
+                deviceNoId.memoryMappings = new List<MemoryMapping>();
 
                 foreach (MemoryMapping mm in deviceToCopy.memoryMappings)
                 {
@@ -131,7 +131,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
 
             if(deviceToCopy.dataEvents != null)
             {
-                deviceToCopy.dataEvents = new List<AthenaDataEvent>();
+                deviceNoId.dataEvents = new List<AthenaDataEvent>();
 
                 foreach( AthenaDataEvent athenaDataEvent in deviceToCopy.dataEvents )
                 {
