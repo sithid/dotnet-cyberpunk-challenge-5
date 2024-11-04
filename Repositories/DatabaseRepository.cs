@@ -50,9 +50,14 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
                 {
                     foreach (Device oldDevice in oldCluster.devices)
                     {
-                        _dataContext.AthenaDataEvents.RemoveRange(oldDevice.dataEvents);
-                        _dataContext.MemoryMappings.RemoveRange(oldDevice.memoryMappings);
-                        _dataContext.Processs.RemoveRange(oldDevice.processes);
+                        if( oldDevice.dataEvents != null )
+                            _dataContext.AthenaDataEvents.RemoveRange(oldDevice.dataEvents);
+
+                        if( oldDevice.memoryMappings != null )
+                            _dataContext.MemoryMappings.RemoveRange(oldDevice.memoryMappings);
+
+                        if( oldDevice.processes != null )
+                            _dataContext.Processs.RemoveRange(oldDevice.processes);
                     }
 
                     _dataContext.Devices.RemoveRange(oldCluster.devices);
@@ -67,6 +72,9 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
 
         public ArasakaCluster BuildArasakaCluster( ArasakaCluster clusterToCopy )
         {
+
+            Console.WriteLine("BuildArasakaCluster");
+
             var clusterNoId = new ArasakaCluster
             {
                 clusterName = clusterToCopy.clusterName,
@@ -96,6 +104,8 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
 
         public Device BuildDevice( Device deviceToCopy )
         {
+            Console.WriteLine("BuildDevice");
+
             var deviceNoId = new Device
             {
                 name = deviceToCopy.name,
@@ -104,7 +114,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
                 processorType = deviceToCopy.processorType,
                 region = deviceToCopy.region,
                 athenaAccessKey = deviceToCopy.athenaAccessKey,
-                clusterId = deviceToCopy.clusterId
+                //clusterId = deviceToCopy.clusterId
             };
 
             if (deviceToCopy.processes != null)
@@ -114,7 +124,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
                 foreach (Process p in deviceToCopy.processes)
                 {
                     Process processNoId = BuildProcess(p);
-                    deviceToCopy.processes.Add(processNoId);
+                    deviceNoId.processes.Add(processNoId);
                 }
             }
 
@@ -125,7 +135,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
                 foreach (MemoryMapping mm in deviceToCopy.memoryMappings)
                 {
                     MemoryMapping mappingNoId = BuildMemoryMapping(mm);
-                    deviceToCopy.memoryMappings.Add(mappingNoId);
+                    deviceNoId.memoryMappings.Add(mappingNoId);
                 }
             }
 
@@ -136,7 +146,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
                 foreach( AthenaDataEvent athenaDataEvent in deviceToCopy.dataEvents )
                 {
                     AthenaDataEvent eventNoId = BuildAthenaDataEvent(athenaDataEvent);
-                    deviceToCopy.dataEvents.Add(eventNoId);
+                    deviceNoId.dataEvents.Add(eventNoId);
                 }
             }
 
@@ -145,17 +155,21 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
 
         public  Process BuildProcess( Process process )
         {
+            Console.WriteLine("BuildProcess");
+
             return new Process()
             {
                 memory = process.memory,
                 family = process.family,
                 openFiles = process.openFiles,
-                deviceId = process.deviceId,
+                //deviceId = process.deviceId,
             };
         }
 
         public MemoryMapping BuildMemoryMapping( MemoryMapping memoryMapping )
         {
+            Console.WriteLine("BuildMemoryMapping");
+
             return new MemoryMapping
             {
                 memoryType = memoryMapping.memoryType,
@@ -168,12 +182,14 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
                 memoryEccSupport = memoryMapping.memoryEccSupport,
                 memoryHeatSpreader = memoryMapping.memoryHeatSpreader,
                 memoryWarrantyYears = memoryMapping.memoryWarrantyYears,
-                deviceId = memoryMapping.deviceId
+                //deviceId = memoryMapping.deviceId
             };
         }
 
         public AthenaDataEvent BuildAthenaDataEvent( AthenaDataEvent athenaDataEvent )
         {
+            Console.WriteLine("BuildAthenaDataEvent");
+
             return new AthenaDataEvent
             {
                 userId = athenaDataEvent.userId,
@@ -194,7 +210,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
                 errorMessage = athenaDataEvent.errorMessage,
                 responseTime = athenaDataEvent.responseTime,
                 success = athenaDataEvent.success,
-                deviceId = athenaDataEvent.deviceId
+                //deviceId = athenaDataEvent.deviceId
             };
         }
     }

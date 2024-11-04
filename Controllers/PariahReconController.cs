@@ -61,7 +61,7 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
         {
             try
             {
-                var response = pariahClient.GetAsync($"api/ArasakaCluster/{id}").Result;
+                var response = await pariahClient.GetAsync($"api/ArasakaCluster/{id}");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -81,7 +81,7 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest( $"Something went wrong: {ex.Message}");
             }
         }
     }
