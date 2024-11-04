@@ -6,5 +6,6 @@ namespace dotnet_cyberpunk_challenge_5.Repositories.Contracts
     {
         Task<List<ArasakaCluster>> GetArasakaClustersAsync();
         Task<ArasakaCluster> GetArasakaClusterAsync( int id );
+        Task<bool> UpdateData( ArasakaCluster cluster );
     }
 }

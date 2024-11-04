@@ -37,11 +37,17 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
         {
             try
             {
-                HttpResponseMessage response = pariahClient.GetAsync("api/ArasakaCluster").Result;
+                var response = pariahClient.GetAsync("api/ArasakaCluster").Result;
 
                 if (response.IsSuccessStatusCode)
                 {
                     var newClusters = response.Content.ReadFromJsonAsync<List<ArasakaCluster>>().Result;
+
+                    if (newClusters != null)
+                    {
+                        foreach (var cluster in newClusters)
+                            await _dataRepository.UpdateData(cluster);
+                    }
 
                     return Ok(newClusters);
                 }
@@ -61,152 +67,21 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
         {
             try
             {
-                HttpResponseMessage response = pariahClient.GetAsync($"api/ArasakaCluster/{id}").Result;
+                var response = pariahClient.GetAsync($"api/ArasakaCluster/{id}").Result;
 
                 if (response.IsSuccessStatusCode)
                 {
-                    ArasakaCluster updatedCluster = response.Content.ReadFromJsonAsync<ArasakaCluster>().Result;
+                    var updatedCluster = response.Content.ReadFromJsonAsync<ArasakaCluster>().Result;
 
                     if (updatedCluster == null)
                         return NotFound();
 
-                    var existingCluster = _dataRepository.GetArasakaClusterAsync(id).Result;
+                    var existingCluster = await _dataRepository.GetArasakaClusterAsync(id);
 
                     if( existingCluster != null )
-                    { }
+                        _dataRepository.UpdateData(existingCluster);
 
                     return Ok(updatedCluster);
-                    /*
-                    
-                    if (existingCluster != null)
-                    {
-                        _dataContext.Entry(existingCluster).CurrentValues.SetValues(updatedCluster);
-                        await _dataContext.SaveChangesAsync();
-                        return Ok(updatedCluster);
-                    }
-                    else
-                    {
-                        var toAdd = new ArasakaCluster
-                        {
-                            clusterName = updatedCluster.clusterName,
-                            nodeCount = updatedCluster.nodeCount,
-                            cpuCores = updatedCluster.cpuCores,
-                            memoryGb = updatedCluster.memoryGb,
-                            storageTb = updatedCluster.storageTb,
-                            creationDate = updatedCluster.creationDate,
-                            environment = updatedCluster.environment,
-                            kubernetesVersion = updatedCluster.kubernetesVersion,
-                            region = updatedCluster.region,
-                        };
-
-                        if (updatedCluster.devices != null)
-                        {
-                            toAdd.devices = new List<Device>();
-
-                            foreach (Device d in updatedCluster.devices)
-                            {
-                                var deviceToAdd = new Device
-                                {
-                                    name = d.name,
-                                    publicKey = d.publicKey,
-                                    architecture = d.architecture,
-                                    processorType = d.processorType,
-                                    region = d.region,
-                                    athenaAccessKey = d.athenaAccessKey,
-                                    clusterId = d.clusterId,
-                                };
-
-                                if (d.processes != null)
-                                {
-                                    deviceToAdd.processes = new List<Process>();
-
-                                    foreach (Process p in deviceToAdd.processes)
-                                    {
-                                        var proc = new Process()
-                                        {
-                                            memory = p.memory,
-                                            family = p.family,
-                                            openFiles = p.openFiles,
-                                            deviceId = p.deviceId,
-                                        };
-
-                                        deviceToAdd.processes.Add(proc);
-                                        _dataContext.Processs.Add(proc);
-                                    }
-                                }
-
-                                if (d.memoryMappings != null)
-                                {
-                                    deviceToAdd.memoryMappings = new List<MemoryMapping>();
-
-                                    foreach (MemoryMapping m in deviceToAdd.memoryMappings)
-                                    {
-                                        var mapping = new MemoryMapping
-                                        {
-                                            memoryType = m.memoryType,
-                                            memorySizeGb = m.memorySizeGb,
-                                            memorySpeedMhz = m.memorySpeedMhz,
-                                            memoryTechnology = m.memoryTechnology,
-                                            memoryLatency = m.memoryLatency,
-                                            memoryVoltage = m.memoryVoltage,
-                                            memoryFormFactor = m.memoryFormFactor,
-                                            memoryEccSupport = m.memoryEccSupport,
-                                            memoryHeatSpreader = m.memoryHeatSpreader,
-                                            memoryWarrantyYears = m.memoryWarrantyYears,
-                                            deviceId = m.deviceId,
-                                        };
-
-                                        deviceToAdd.memoryMappings.Add(mapping);
-                                        _dataContext.MemoryMappings.Add(mapping);
-                                    }
-                                }
-
-                                if (d.dataEvents != null)
-                                {
-                                    deviceToAdd.dataEvents = new List<AthenaDataEvent>();
-
-                                    foreach (AthenaDataEvent e in d.dataEvents)
-                                    {
-                                        var dataEvent = new AthenaDataEvent
-                                        {
-                                            userId = e.userId,
-                                            ipAddress = e.ipAddress,
-                                            macAddress = e.macAddress,
-                                            eventTimestamp = e.eventTimestamp,
-                                            eventType = e.eventType,
-                                            source = e.source,
-                                            severity = e.severity,
-                                            location = e.location,
-                                            userAgent = e.userAgent,
-                                            deviceBrand = e.deviceBrand,
-                                            deviceModel = e.deviceModel,
-                                            osVersion = e.osVersion,
-                                            appName = e.appName,
-                                            appVersion = e.appVersion,
-                                            errorCode = e.errorCode,
-                                            errorMessage = e.errorMessage,
-                                            responseTime = e.responseTime,
-                                            success = e.success,
-                                            deviceId = e.deviceId,
-                                        };
-
-                                        deviceToAdd.dataEvents.Add(dataEvent);
-                                        _dataContext.AthenaDataEvents.Add(dataEvent);
-                                    }
-                                }
-                                toAdd.devices.Add(deviceToAdd);
-                                _dataContext.Devices.Add(deviceToAdd);
-                            }
-
-                            _dataContext.ArasakaClusters.Add(toAdd);
-                            await _dataContext.SaveChangesAsync();
-                            return Ok(updatedCluster);
-                        }
-                    }
-
-                    return Ok(updatedCluster);
-
-                    */
                 }
                 else
                 {

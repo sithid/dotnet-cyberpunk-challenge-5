@@ -25,7 +25,7 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
         {
             List<ArasakaCluster> clusters = await _dataRepository.GetArasakaClustersAsync();
 
-            if (clusters.Any())
+            if (clusters != null)
                 return Ok(clusters);
             else
                 return NotFound("No clusters found.");
