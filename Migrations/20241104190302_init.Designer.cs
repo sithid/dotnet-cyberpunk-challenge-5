@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using dotnet_cyberpunk_challenge_5.Models;
+using dotnet_cyberpunk_challenge_5.Controllers;
 
 #nullable disable
 
 namespace dotnet_cyberpunk_challenge_5.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241104042440_init")]
+    [Migration("20241104190302_init")]
     partial class init
     {
         /// <inheritdoc />

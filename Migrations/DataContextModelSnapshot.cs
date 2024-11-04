@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using dotnet_cyberpunk_challenge_5.Models;
+using dotnet_cyberpunk_challenge_5.Controllers;
 
 #nullable disable
 

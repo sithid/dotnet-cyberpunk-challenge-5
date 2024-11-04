@@ -1,4 +1,4 @@
-using dotnet_cyberpunk_challenge_5.Models;
+using dotnet_cyberpunk_challenge_5.Controllers;
 using dotnet_cyberpunk_challenge_5.Repositories;
 using dotnet_cyberpunk_challenge_5.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;

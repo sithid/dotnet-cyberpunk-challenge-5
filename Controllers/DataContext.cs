@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using dotnet_cyberpunk_challenge_5.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 
-namespace dotnet_cyberpunk_challenge_5.Models
+namespace dotnet_cyberpunk_challenge_5.Controllers
 {
     public class DataContext : DbContext
     {
@@ -12,9 +13,9 @@ namespace dotnet_cyberpunk_challenge_5.Models
         public DbSet<MemoryMapping> MemoryMappings { get; set; }
         public DbSet<AthenaDataEvent> AthenaDataEvents { get; set; }
 
-        public DataContext( DbContextOptions<DataContext> options ) : base( options )
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
