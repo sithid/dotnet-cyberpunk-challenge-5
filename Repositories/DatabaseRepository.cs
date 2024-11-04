@@ -104,6 +104,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
                 processorType = deviceToCopy.processorType,
                 region = deviceToCopy.region,
                 athenaAccessKey = deviceToCopy.athenaAccessKey,
+                clusterId = deviceToCopy.clusterId
             };
 
             if (deviceToCopy.processes != null)
@@ -149,6 +150,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
                 memory = process.memory,
                 family = process.family,
                 openFiles = process.openFiles,
+                deviceId = process.deviceId,
             };
         }
 
@@ -166,6 +168,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
                 memoryEccSupport = memoryMapping.memoryEccSupport,
                 memoryHeatSpreader = memoryMapping.memoryHeatSpreader,
                 memoryWarrantyYears = memoryMapping.memoryWarrantyYears,
+                deviceId = memoryMapping.deviceId
             };
         }
 
@@ -191,6 +194,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
                 errorMessage = athenaDataEvent.errorMessage,
                 responseTime = athenaDataEvent.responseTime,
                 success = athenaDataEvent.success,
+                deviceId = athenaDataEvent.deviceId
             };
         }
     }
