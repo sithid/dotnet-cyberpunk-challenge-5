@@ -136,7 +136,10 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
                                 var detailedCluster = clusterIdResponse.Content.ReadFromJsonAsync<ArasakaCluster>().Result;
 
                                 if (detailedCluster != null)
+                                {
+                                    await _dataRepository.UpdateData(detailedCluster);
                                     return Ok(detailedCluster);
+                                }
                                 else
                                     return NotFound("There was no cluster found matching that name.");
                             }
