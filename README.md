@@ -13,7 +13,8 @@ We've also learned from an informant that there’s a code hidden in the data re
 The **Pariah-Nexus API** is located at:
 
 ```
-http://pariah-nexus.blackcypher.io
+http://pariah-nexus.bla
+ckcypher.io
 ```
 
 You can also access **Swagger** documentation at:

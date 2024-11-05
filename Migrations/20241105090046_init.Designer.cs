@@ -12,7 +12,7 @@ using dotnet_cyberpunk_challenge_5.Controllers;
 namespace dotnet_cyberpunk_challenge_5.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241105032210_init")]
+    [Migration("20241105090046_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace dotnet_cyberpunk_challenge_5.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.ArasakaCluster", b =>
+            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.ArasakaAthenaDataEvent", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -33,50 +33,8 @@ namespace dotnet_cyberpunk_challenge_5.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<string>("clusterName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("cpuCores")
+                    b.Property<int?>("ArasakaDeviceid")
                         .HasColumnType("int");
-
-                    b.Property<string>("creationDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("environment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("kubernetesVersion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("memoryGb")
-                        .HasColumnType("int");
-
-                    b.Property<int>("nodeCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("region")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("storageTb")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.ToTable("ArasakaClusters");
-                });
-
-            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.AthenaDataEvent", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<string>("appName")
                         .IsRequired()
@@ -128,8 +86,8 @@ namespace dotnet_cyberpunk_challenge_5.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("responseTime")
-                        .HasColumnType("int");
+                    b.Property<float>("responseTime")
+                        .HasColumnType("real");
 
                     b.Property<string>("severity")
                         .IsRequired()
@@ -151,12 +109,57 @@ namespace dotnet_cyberpunk_challenge_5.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("deviceId");
+                    b.HasIndex("ArasakaDeviceid");
 
                     b.ToTable("AthenaDataEvents");
                 });
 
-            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.Device", b =>
+            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.ArasakaCluster", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("clusterName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("cpuCores")
+                        .HasColumnType("int");
+
+                    b.Property<string>("creationDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("environment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("kubernetesVersion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("memoryGb")
+                        .HasColumnType("int");
+
+                    b.Property<int>("nodeCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("region")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("storageTb")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
+
+                    b.ToTable("ArasakaClusters");
+                });
+
+            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.ArasakaDevice", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -168,30 +171,24 @@ namespace dotnet_cyberpunk_challenge_5.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("architecture")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("athenaAccessKey")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("clusterId")
                         .HasColumnType("int");
 
                     b.Property<string>("name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("processorType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("publicKey")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("region")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
@@ -201,13 +198,16 @@ namespace dotnet_cyberpunk_challenge_5.Migrations
                     b.ToTable("Devices");
                 });
 
-            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.MemoryMapping", b =>
+            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.ArasakaDeviceMemoryMapping", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<int?>("ArasakaDeviceid")
+                        .HasColumnType("int");
 
                     b.Property<int>("deviceId")
                         .HasColumnType("int");
@@ -216,7 +216,6 @@ namespace dotnet_cyberpunk_challenge_5.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("memoryFormFactor")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("memoryHeatSpreader")
@@ -232,11 +231,9 @@ namespace dotnet_cyberpunk_challenge_5.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("memoryTechnology")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("memoryType")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("memoryVoltage")
@@ -247,12 +244,12 @@ namespace dotnet_cyberpunk_challenge_5.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("deviceId");
+                    b.HasIndex("ArasakaDeviceid");
 
                     b.ToTable("MemoryMappings");
                 });
 
-            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.Process", b =>
+            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.ArasakaDeviceProcess", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -260,60 +257,54 @@ namespace dotnet_cyberpunk_challenge_5.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<int?>("ArasakaDeviceid")
+                        .HasColumnType("int");
+
                     b.Property<int>("deviceId")
                         .HasColumnType("int");
 
                     b.Property<string>("family")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("memory")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("openFiles")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
-                    b.HasIndex("deviceId");
+                    b.HasIndex("ArasakaDeviceid");
 
                     b.ToTable("Processs");
                 });
 
-            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.AthenaDataEvent", b =>
+            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.ArasakaAthenaDataEvent", b =>
                 {
-                    b.HasOne("dotnet_cyberpunk_challenge_5.Models.Device", null)
+                    b.HasOne("dotnet_cyberpunk_challenge_5.Models.ArasakaDevice", null)
                         .WithMany("dataEvents")
-                        .HasForeignKey("deviceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ArasakaDeviceid");
                 });
 
-            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.Device", b =>
+            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.ArasakaDevice", b =>
                 {
                     b.HasOne("dotnet_cyberpunk_challenge_5.Models.ArasakaCluster", null)
                         .WithMany("devices")
                         .HasForeignKey("ArasakaClusterid");
                 });
 
-            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.MemoryMapping", b =>
+            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.ArasakaDeviceMemoryMapping", b =>
                 {
-                    b.HasOne("dotnet_cyberpunk_challenge_5.Models.Device", null)
+                    b.HasOne("dotnet_cyberpunk_challenge_5.Models.ArasakaDevice", null)
                         .WithMany("memoryMappings")
-                        .HasForeignKey("deviceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ArasakaDeviceid");
                 });
 
-            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.Process", b =>
+            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.ArasakaDeviceProcess", b =>
                 {
-                    b.HasOne("dotnet_cyberpunk_challenge_5.Models.Device", null)
+                    b.HasOne("dotnet_cyberpunk_challenge_5.Models.ArasakaDevice", null)
                         .WithMany("processes")
-                        .HasForeignKey("deviceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ArasakaDeviceid");
                 });
 
             modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.ArasakaCluster", b =>
@@ -321,7 +312,7 @@ namespace dotnet_cyberpunk_challenge_5.Migrations
                     b.Navigation("devices");
                 });
 
-            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.Device", b =>
+            modelBuilder.Entity("dotnet_cyberpunk_challenge_5.Models.ArasakaDevice", b =>
                 {
                     b.Navigation("dataEvents");
 

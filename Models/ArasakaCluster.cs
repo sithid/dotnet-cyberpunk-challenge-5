@@ -12,6 +12,6 @@
         public string environment {  get; set; }
         public string kubernetesVersion {  get; set; }
         public string region {  get; set; }
-        public List<Device>? devices {  get; set; }
+        public List<ArasakaDevice>? devices {  get; set; }
     }
 }

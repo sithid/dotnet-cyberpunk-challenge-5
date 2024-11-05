@@ -8,9 +8,9 @@ namespace dotnet_cyberpunk_challenge_5.Repositories.Contracts
         Task<ArasakaCluster> GetArasakaClusterAsync( int id );
         Task UpdateData( ArasakaCluster cluster );
         ArasakaCluster BuildArasakaCluster(ArasakaCluster cluster);
-        Device BuildDevice(Device device);
-        Process BuildProcess(Process process);
-        MemoryMapping BuildMemoryMapping(MemoryMapping memoryMapping);
-        AthenaDataEvent BuildAthenaDataEvent(AthenaDataEvent athenaDataEvent);
+        ArasakaDevice BuildDevice(ArasakaDevice device);
+        ArasakaDeviceProcess BuildProcess(ArasakaDeviceProcess process);
+        ArasakaDeviceMemoryMapping BuildMemoryMapping(ArasakaDeviceMemoryMapping memoryMapping);
+        ArasakaAthenaDataEvent BuildAthenaDataEvent(ArasakaAthenaDataEvent athenaDataEvent);
     }
 }

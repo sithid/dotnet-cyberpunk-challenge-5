@@ -37,12 +37,12 @@ namespace dotnet_cyberpunk_challenge_5.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    publicKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    architecture = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    processorType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    region = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    athenaAccessKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    publicKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    architecture = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    processorType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    region = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    athenaAccessKey = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     clusterId = table.Column<int>(type: "int", nullable: false),
                     ArasakaClusterid = table.Column<int>(type: "int", nullable: true)
                 },
@@ -78,19 +78,19 @@ namespace dotnet_cyberpunk_challenge_5.Migrations
                     appVersion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     errorCode = table.Column<int>(type: "int", nullable: false),
                     errorMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    responseTime = table.Column<int>(type: "int", nullable: false),
+                    responseTime = table.Column<float>(type: "real", nullable: false),
                     success = table.Column<bool>(type: "bit", nullable: false),
-                    deviceId = table.Column<int>(type: "int", nullable: false)
+                    deviceId = table.Column<int>(type: "int", nullable: false),
+                    ArasakaDeviceid = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AthenaDataEvents", x => x.id);
                     table.ForeignKey(
-                        name: "FK_AthenaDataEvents_Devices_deviceId",
-                        column: x => x.deviceId,
+                        name: "FK_AthenaDataEvents_Devices_ArasakaDeviceid",
+                        column: x => x.ArasakaDeviceid,
                         principalTable: "Devices",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -99,27 +99,27 @@ namespace dotnet_cyberpunk_challenge_5.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    memoryType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    memoryType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     memorySizeGb = table.Column<float>(type: "real", nullable: false),
                     memorySpeedMhz = table.Column<int>(type: "int", nullable: false),
-                    memoryTechnology = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    memoryTechnology = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     memoryLatency = table.Column<int>(type: "int", nullable: false),
                     memoryVoltage = table.Column<float>(type: "real", nullable: false),
-                    memoryFormFactor = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    memoryFormFactor = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     memoryEccSupport = table.Column<bool>(type: "bit", nullable: false),
                     memoryHeatSpreader = table.Column<bool>(type: "bit", nullable: false),
                     memoryWarrantyYears = table.Column<int>(type: "int", nullable: false),
-                    deviceId = table.Column<int>(type: "int", nullable: false)
+                    deviceId = table.Column<int>(type: "int", nullable: false),
+                    ArasakaDeviceid = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MemoryMappings", x => x.id);
                     table.ForeignKey(
-                        name: "FK_MemoryMappings_Devices_deviceId",
-                        column: x => x.deviceId,
+                        name: "FK_MemoryMappings_Devices_ArasakaDeviceid",
+                        column: x => x.ArasakaDeviceid,
                         principalTable: "Devices",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -128,26 +128,26 @@ namespace dotnet_cyberpunk_challenge_5.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    memory = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    family = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    openFiles = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    deviceId = table.Column<int>(type: "int", nullable: false)
+                    memory = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    family = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    openFiles = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    deviceId = table.Column<int>(type: "int", nullable: false),
+                    ArasakaDeviceid = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Processs", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Processs_Devices_deviceId",
-                        column: x => x.deviceId,
+                        name: "FK_Processs_Devices_ArasakaDeviceid",
+                        column: x => x.ArasakaDeviceid,
                         principalTable: "Devices",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AthenaDataEvents_deviceId",
+                name: "IX_AthenaDataEvents_ArasakaDeviceid",
                 table: "AthenaDataEvents",
-                column: "deviceId");
+                column: "ArasakaDeviceid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Devices_ArasakaClusterid",
@@ -155,14 +155,14 @@ namespace dotnet_cyberpunk_challenge_5.Migrations
                 column: "ArasakaClusterid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MemoryMappings_deviceId",
+                name: "IX_MemoryMappings_ArasakaDeviceid",
                 table: "MemoryMappings",
-                column: "deviceId");
+                column: "ArasakaDeviceid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Processs_deviceId",
+                name: "IX_Processs_ArasakaDeviceid",
                 table: "Processs",
-                column: "deviceId");
+                column: "ArasakaDeviceid");
         }
 
         /// <inheritdoc />

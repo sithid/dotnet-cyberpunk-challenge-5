@@ -49,7 +49,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
 
                 if (oldCluster.devices != null)
                 {
-                    foreach (Device oldDevice in oldCluster.devices)
+                    foreach (ArasakaDevice oldDevice in oldCluster.devices)
                     {
                         if (oldDevice.processes != null)
                         {
@@ -100,11 +100,11 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
 
             if (clusterToCopy.devices != null)
             {
-                clusterNoId.devices = new List<Device>();
+                clusterNoId.devices = new List<ArasakaDevice>();
 
-                foreach (Device oldDevice in clusterToCopy.devices)
+                foreach (ArasakaDevice oldDevice in clusterToCopy.devices)
                 {
-                    Device deviceNoId = BuildDevice(oldDevice);
+                    ArasakaDevice deviceNoId = BuildDevice(oldDevice);
                     clusterNoId.devices.Add(deviceNoId);
                 }
             }
@@ -112,9 +112,9 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
             return clusterNoId;
         }
 
-        public Device BuildDevice( Device deviceToCopy )
+        public ArasakaDevice BuildDevice( ArasakaDevice deviceToCopy )
         {
-            var deviceNoId = new Device
+            var deviceNoId = new ArasakaDevice
             {
                 name = deviceToCopy.name,
                 publicKey = deviceToCopy.publicKey,
@@ -127,33 +127,33 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
 
             if (deviceToCopy.processes != null)
             {
-                deviceNoId.processes = new List<Process>();
+                deviceNoId.processes = new List<ArasakaDeviceProcess>();
 
-                foreach (Process p in deviceToCopy.processes)
+                foreach (ArasakaDeviceProcess p in deviceToCopy.processes)
                 {
-                    Process processNoId = BuildProcess(p);
+                    ArasakaDeviceProcess processNoId = BuildProcess(p);
                     deviceNoId.processes.Add(processNoId);
                 }
             }
 
             if (deviceToCopy.memoryMappings != null)
             {
-                deviceNoId.memoryMappings = new List<MemoryMapping>();
+                deviceNoId.memoryMappings = new List<ArasakaDeviceMemoryMapping>();
 
-                foreach (MemoryMapping mm in deviceToCopy.memoryMappings)
+                foreach (ArasakaDeviceMemoryMapping mm in deviceToCopy.memoryMappings)
                 {
-                    MemoryMapping mappingNoId = BuildMemoryMapping(mm);
+                    ArasakaDeviceMemoryMapping mappingNoId = BuildMemoryMapping(mm);
                     deviceNoId.memoryMappings.Add(mappingNoId);
                 }
             }
 
             if(deviceToCopy.dataEvents != null)
             {
-                deviceNoId.dataEvents = new List<AthenaDataEvent>();
+                deviceNoId.dataEvents = new List<ArasakaAthenaDataEvent>();
 
-                foreach( AthenaDataEvent athenaDataEvent in deviceToCopy.dataEvents )
+                foreach( ArasakaAthenaDataEvent athenaDataEvent in deviceToCopy.dataEvents )
                 {
-                    AthenaDataEvent eventNoId = BuildAthenaDataEvent(athenaDataEvent);
+                    ArasakaAthenaDataEvent eventNoId = BuildAthenaDataEvent(athenaDataEvent);
                     deviceNoId.dataEvents.Add(eventNoId);
                 }
             }
@@ -161,9 +161,9 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
             return deviceNoId;
         }
 
-        public  Process BuildProcess( Process process )
+        public ArasakaDeviceProcess BuildProcess( ArasakaDeviceProcess process )
         {
-            return new Process()
+            return new ArasakaDeviceProcess()
             {
                 memory = process.memory,
                 family = process.family,
@@ -172,9 +172,9 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
             };
         }
 
-        public MemoryMapping BuildMemoryMapping( MemoryMapping memoryMapping )
+        public ArasakaDeviceMemoryMapping BuildMemoryMapping( ArasakaDeviceMemoryMapping memoryMapping )
         {
-            return new MemoryMapping
+            return new ArasakaDeviceMemoryMapping
             {
                 memoryType = memoryMapping.memoryType,
                 memorySizeGb = memoryMapping.memorySizeGb,
@@ -190,9 +190,9 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
             };
         }
 
-        public AthenaDataEvent BuildAthenaDataEvent( AthenaDataEvent athenaDataEvent )
+        public ArasakaAthenaDataEvent BuildAthenaDataEvent( ArasakaAthenaDataEvent athenaDataEvent )
         {
-            return new AthenaDataEvent
+            return new ArasakaAthenaDataEvent
             {
                 userId = athenaDataEvent.userId,
                 ipAddress = athenaDataEvent.ipAddress,

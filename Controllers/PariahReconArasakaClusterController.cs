@@ -18,19 +18,19 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PariahReconController : ControllerBase
+    public class PariahReconArasakaClusterController : ControllerBase
     {
         private readonly IDatabaseRepository _dataRepository;
 
-        public HttpClient pariahClient { get; set; }
+        private HttpClient pariahClient { get; set; }
 
-        public PariahReconController(IDatabaseRepository _dataRepo)
+        public PariahReconArasakaClusterController(IDatabaseRepository _dataRepo)
         {
             _dataRepository = _dataRepo;
 
             pariahClient = new HttpClient();
             pariahClient.BaseAddress = new Uri("http://pariah-nexus.blackcypher.io");
-            //pariahClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            pariahClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         /* Secretes Learned
@@ -107,7 +107,7 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
 
                 if (clusterIdResponse.IsSuccessStatusCode)
                 {
-                    var updatedCluster = clusterIdResponse.Content.ReadFromJsonAsync<ArasakaCluster>().Result;
+                    var updatedCluster = await clusterIdResponse.Content.ReadFromJsonAsync<ArasakaCluster>();
 
                     if (updatedCluster == null)
                         return NotFound();
@@ -175,31 +175,6 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
             catch (Exception ex)
             {
                 return BadRequest($"Something went wrong: {ex.Message}");
-            }
-        }
-
-        [HttpGet("GetSingleDeviceById/{id}")]
-        public async Task<ActionResult<Device>> GetSingleDeviceById( int id )
-        {
-            try
-            {
-                var deviceIdResponse = await pariahClient.GetAsync($"api/ArasakaDevice/{id}");
-
-                if (deviceIdResponse.IsSuccessStatusCode)
-                {
-                    var device = deviceIdResponse.Content.ReadFromJsonAsync<Device>().Result;
-
-                    if (device == null)
-                        return NotFound("There was no device with that id found.");
-
-                    return Ok(device);
-                }
-                else
-                    return BadRequest(deviceIdResponse.StatusCode);
-            }
-            catch( Exception ex )
-            {
-                return BadRequest(ex);
             }
         }
     }
