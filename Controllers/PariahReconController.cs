@@ -1,4 +1,5 @@
-﻿using dotnet_cyberpunk_challenge_5.Models;
+﻿using Azure;
+using dotnet_cyberpunk_challenge_5.Models;
 using dotnet_cyberpunk_challenge_5.Repositories;
 using dotnet_cyberpunk_challenge_5.Repositories.Contracts;
 using Microsoft.AspNetCore.Http;
@@ -32,16 +33,66 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
             pariahClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        [HttpGet("GetArasakaCluster/{id}")]
-        public async Task<ActionResult<ArasakaCluster>> GetArasakaCluster(int id)
+        [HttpGet("GetAllClusterData")]
+        public async Task<ActionResult<IEnumerable<ArasakaCluster>>> GetAllClusterData()
         {
             try
             {
-                var response = await pariahClient.GetAsync($"api/ArasakaCluster/{id}");
+                var clusterListReponse = pariahClient.GetAsync("api/ArasakaCluster").Result;
 
-                if (response.IsSuccessStatusCode)
+                if (clusterListReponse.IsSuccessStatusCode)
                 {
-                    var updatedCluster = response.Content.ReadFromJsonAsync<ArasakaCluster>().Result;
+                    var arasakaClusters = clusterListReponse.Content.ReadFromJsonAsync<List<ArasakaCluster>>().Result;
+
+                    if (arasakaClusters != null)
+                    {
+                        var detailedClusters = new List<ArasakaCluster>();
+
+                        foreach (ArasakaCluster lazyCluster in arasakaClusters)
+                        {
+                            if (lazyCluster != null)
+                            {
+                                var clusterIdResponse = pariahClient.GetAsync($"api/ArasakaCluster/{lazyCluster.id}").Result;
+
+                                if (clusterIdResponse.IsSuccessStatusCode)
+                                {
+                                    var singleDetailedCluster = clusterIdResponse.Content.ReadFromJsonAsync<ArasakaCluster>().Result;
+
+                                    if (singleDetailedCluster != null)
+                                    {
+                                        await _dataRepository.UpdateData(singleDetailedCluster);
+                                        detailedClusters.Add(singleDetailedCluster);
+                                    }
+                                }
+                            }
+                        }
+
+                        return Ok(detailedClusters);
+                    }
+                    else
+                        return NotFound($"There were no clusters found.");
+                }
+                else
+                {
+                    return BadRequest($"There was an issue returning the clusters: {clusterListReponse.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Something went wrong: {ex.Message}");
+            }
+        }
+
+        [HttpGet("GetSingleClusterById/{id}")]
+        public async Task<ActionResult<ArasakaCluster>> GetSingleClusterById(int id)
+        {
+            try
+            {
+                var clusterIdResponse = await pariahClient.GetAsync($"api/ArasakaCluster/{id}");
+
+                if (clusterIdResponse.IsSuccessStatusCode)
+                {
+                    var updatedCluster = clusterIdResponse.Content.ReadFromJsonAsync<ArasakaCluster>().Result;
 
                     if (updatedCluster == null)
                         return NotFound();
@@ -52,7 +103,7 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
                 }
                 else
                 {
-                    return BadRequest($"The cluster you seek is missing or invalid: {response.StatusCode} ");
+                    return BadRequest($"The cluster you seek is missing or invalid: {clusterIdResponse.StatusCode} ");
                 }
             }
             catch (Exception ex)
@@ -61,46 +112,52 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
             }
         }
 
-        /* GetArasakaClusters() REMOVED
+        [HttpGet("GetSingleClusterByName/{clusterName}")]
+        public async Task<ActionResult<ArasakaCluster>> GetSingleClusterByName(string clusterName )
+        {
+            try
+            {
+                var clusterListReponse = await pariahClient.GetAsync("api/ArasakaCluster");
 
-         After rereading challenge one I have noticed that a generic Get request for all clusters isnt exactly requested.
-         Api should accept a GET request for a single cluster by id or name.
+                if (clusterListReponse.IsSuccessStatusCode)
+                {
+                    var arasakaClusters = clusterListReponse.Content.ReadFromJsonAsync<List<ArasakaCluster>>().Result;
 
-         [HttpGet("GetArasakaClusters")]
-         public async Task<ActionResult<IEnumerable<ArasakaCluster>>> GetArasakaClusters()
-         {
-             try
-             {
-                 var response = pariahClient.GetAsync("api/ArasakaCluster").Result;
+                    if (arasakaClusters != null)
+                    {
+                        var lazyCluster = arasakaClusters.Find( clusterToFind => string.Equals(clusterToFind.clusterName, clusterName));
 
-                 if (response.IsSuccessStatusCode)
-                 {
-                     var newClusters = response.Content.ReadFromJsonAsync<List<ArasakaCluster>>().Result;
+                        if (lazyCluster != null)
+                        {
+                            var clusterIdResponse = pariahClient.GetAsync($"api/ArasakaCluster/{lazyCluster.id}").Result;
 
-                     if (newClusters != null)
-                     {
-                         foreach (var c in newClusters)
-                         {
-                             await _dataRepository.UpdateData(c);
-                         }
+                            if (clusterIdResponse.IsSuccessStatusCode)
+                            {
+                                var detailedCluster = clusterIdResponse.Content.ReadFromJsonAsync<ArasakaCluster>().Result;
 
-                         return Ok(newClusters);
-                     }
-                     else
-                     {
-                         return NotFound($"There were no clusters found.");
-                     }
-                 }
-                 else
-                 {
-                     return BadRequest($"There was an issue returning the clusters: {response.StatusCode}");
-                 }
-             }
-             catch (Exception ex)
-             {
-                 return BadRequest($"Something went wrong: {ex.Message}");
-             }
-         }
-        */
+                                if (detailedCluster != null)
+                                    return Ok(detailedCluster);
+                                else
+                                    return NotFound("There was no cluster found matching that name.");
+                            }
+                            else
+                                return NotFound("There was no cluster found matching that name.");
+                        }
+                        else
+                            return NotFound("There was no cluster found matching that name.");
+                    }
+                    else
+                        return NotFound($"There were no clusters found.");
+                }
+                else
+                {
+                    return BadRequest($"There was an issue returning the clusters: {clusterListReponse.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Something went wrong: {ex.Message}");
+            }
+        }
     }
 }
