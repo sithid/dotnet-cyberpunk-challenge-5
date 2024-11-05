@@ -73,7 +73,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
         public ArasakaCluster BuildArasakaCluster( ArasakaCluster clusterToCopy )
         {
 
-            Console.WriteLine("BuildArasakaCluster");
+            Console.WriteLine($"BuildArasakaCluster Cluster[{clusterToCopy.id}]");
 
             var clusterNoId = new ArasakaCluster
             {
@@ -104,7 +104,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
 
         public Device BuildDevice( Device deviceToCopy )
         {
-            Console.WriteLine("BuildDevice");
+            Console.WriteLine($"BuildDevice {deviceToCopy.clusterId}->{deviceToCopy.id}");
 
             var deviceNoId = new Device
             {
@@ -155,7 +155,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
 
         public  Process BuildProcess( Process process )
         {
-            Console.WriteLine("BuildProcess");
+            Console.WriteLine( $"BuildProcess Device[{process.deviceId}]->Process[{process.id}]");
 
             return new Process()
             {
@@ -168,7 +168,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
 
         public MemoryMapping BuildMemoryMapping( MemoryMapping memoryMapping )
         {
-            Console.WriteLine("BuildMemoryMapping");
+            Console.WriteLine( $"BuildMemoryMapping Device[{memoryMapping.deviceId}]->MemoryMapping[{memoryMapping.id}]");
 
             return new MemoryMapping
             {
@@ -188,11 +188,11 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
 
         public AthenaDataEvent BuildAthenaDataEvent( AthenaDataEvent athenaDataEvent )
         {
-            Console.WriteLine("BuildAthenaDataEvent");
+            Console.WriteLine($"BuildAthenaDataEvent Device[{athenaDataEvent.deviceId}]->AthenaDataEvent[{athenaDataEvent.id}]");
 
             return new AthenaDataEvent
             {
-                userId = athenaDataEvent.userId,
+                //userId = athenaDataEvent.userId,
                 ipAddress = athenaDataEvent.ipAddress,
                 macAddress = athenaDataEvent.macAddress,
                 eventTimestamp = athenaDataEvent.eventTimestamp,
