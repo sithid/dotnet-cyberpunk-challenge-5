@@ -42,12 +42,20 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
         {
             var oldCluster = await GetArasakaClusterAsync(data.id);
 
+            Console.WriteLine("Building newCluster.");
+
             var newCluster = BuildArasakaCluster(data);
+
+            Console.WriteLine("newCluster built.");
 
             if (oldCluster != null)
             {
+                Console.WriteLine("oldcluster != null");
+
                 if (oldCluster.devices != null)
                 {
+                    Console.WriteLine("oldcluster.devices != null");
+
                     foreach (Device oldDevice in oldCluster.devices)
                     {
                         if( oldDevice.dataEvents != null )
@@ -58,15 +66,15 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
 
                         if( oldDevice.processes != null )
                             _dataContext.Processs.RemoveRange(oldDevice.processes);
+
+                        _dataContext.Devices.RemoveRange(oldCluster.devices);
                     }
 
-                    _dataContext.Devices.RemoveRange(oldCluster.devices);
+                    _dataContext.Remove(oldCluster);
                 }
-
-                _dataContext.ArasakaClusters.Remove(oldCluster);
             }
 
-            _dataContext.ArasakaClusters.Add(newCluster);
+            _dataContext.Add(newCluster);
             _dataContext.SaveChanges();
         }
 
@@ -104,7 +112,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
 
         public Device BuildDevice( Device deviceToCopy )
         {
-            Console.WriteLine($"BuildDevice {deviceToCopy.clusterId}->{deviceToCopy.id}");
+            Console.WriteLine($"BuildDevice Cluster[{deviceToCopy.clusterId}]->Device[{deviceToCopy.id}]");
 
             var deviceNoId = new Device
             {
@@ -114,7 +122,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
                 processorType = deviceToCopy.processorType,
                 region = deviceToCopy.region,
                 athenaAccessKey = deviceToCopy.athenaAccessKey,
-                //clusterId = deviceToCopy.clusterId
+                clusterId = deviceToCopy.clusterId
             };
 
             if (deviceToCopy.processes != null)
@@ -150,7 +158,7 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
                 }
             }
 
-            return deviceToCopy;
+            return deviceNoId;
         }
 
         public  Process BuildProcess( Process process )
