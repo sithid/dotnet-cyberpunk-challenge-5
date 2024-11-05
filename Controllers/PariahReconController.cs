@@ -32,42 +32,6 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
             pariahClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        [HttpGet("GetArasakaClusters")]
-        public async Task<ActionResult<IEnumerable<ArasakaCluster>>> GetArasakaClusters()
-        {
-            try
-            {
-                var response = pariahClient.GetAsync("api/ArasakaCluster").Result;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var newClusters = response.Content.ReadFromJsonAsync<List<ArasakaCluster>>().Result;
-
-                    if (newClusters != null)
-                    {
-                        foreach (var c in newClusters)
-                        {
-                            await _dataRepository.UpdateData(c);
-                        }
-
-                        return Ok(newClusters);
-                    }
-                    else
-                    {
-                        return NotFound($"There were no clusters found.");
-                    }
-                }
-                else
-                {
-                    return BadRequest($"There was an issue returning the clusters: {response.StatusCode}");
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"Something went wrong: {ex.Message}");
-            }
-        }
-
         [HttpGet("GetArasakaCluster/{id}")]
         public async Task<ActionResult<ArasakaCluster>> GetArasakaCluster(int id)
         {
@@ -93,8 +57,50 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest( $"Something went wrong: {ex.Message}");
+                return BadRequest($"Something went wrong: {ex.Message}");
             }
         }
+
+        /* GetArasakaClusters() REMOVED
+
+         After rereading challenge one I have noticed that a generic Get request for all clusters isnt exactly requested.
+         Api should accept a GET request for a single cluster by id or name.
+
+         [HttpGet("GetArasakaClusters")]
+         public async Task<ActionResult<IEnumerable<ArasakaCluster>>> GetArasakaClusters()
+         {
+             try
+             {
+                 var response = pariahClient.GetAsync("api/ArasakaCluster").Result;
+
+                 if (response.IsSuccessStatusCode)
+                 {
+                     var newClusters = response.Content.ReadFromJsonAsync<List<ArasakaCluster>>().Result;
+
+                     if (newClusters != null)
+                     {
+                         foreach (var c in newClusters)
+                         {
+                             await _dataRepository.UpdateData(c);
+                         }
+
+                         return Ok(newClusters);
+                     }
+                     else
+                     {
+                         return NotFound($"There were no clusters found.");
+                     }
+                 }
+                 else
+                 {
+                     return BadRequest($"There was an issue returning the clusters: {response.StatusCode}");
+                 }
+             }
+             catch (Exception ex)
+             {
+                 return BadRequest($"Something went wrong: {ex.Message}");
+             }
+         }
+        */
     }
 }
