@@ -33,39 +33,52 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
                 .ThenInclude(device => device.memoryMappings)
                 .Include(cluster => cluster.devices)
                 .ThenInclude(device => device.dataEvents)
-                .FirstOrDefaultAsync(cluster => string.Equals(cluster.clusterName, $"Cluster-{id}"));
-
+                .FirstOrDefaultAsync(cluster => cluster.clusterName == $"Cluster-{id}");                
+                
             return existingCluster;
         }
 
         public async Task UpdateData( ArasakaCluster data )
         {
-            var oldCluster = await GetArasakaClusterAsync(data.id);
+            var oldCluster = GetArasakaClusterAsync(data.id).Result;
             var newCluster = BuildArasakaCluster(data);
 
             if (oldCluster != null)
             {
+                Console.WriteLine("oldCluster != null");
+
                 if (oldCluster.devices != null)
                 {
                     foreach (Device oldDevice in oldCluster.devices)
                     {
-                        if (oldDevice.dataEvents != null)
-                            _dataContext.AthenaDataEvents.RemoveRange(oldDevice.dataEvents);
+                        if (oldDevice.processes != null)
+                        {
+                            _dataContext.RemoveRange(oldDevice.processes);
+                            _dataContext.SaveChanges();
+                        }
 
                         if (oldDevice.memoryMappings != null)
-                            _dataContext.MemoryMappings.RemoveRange(oldDevice.memoryMappings);
+                        {
+                            _dataContext.RemoveRange(oldDevice.memoryMappings);
+                            _dataContext.SaveChanges();
+                        }
 
-                        if (oldDevice.processes != null)
-                            _dataContext.Processs.RemoveRange(oldDevice.processes);
+                        if (oldDevice.dataEvents != null)
+                        {
+                            _dataContext.RemoveRange(oldDevice.dataEvents);
+                            _dataContext.SaveChanges();
+                        }
                     }
 
-                    _dataContext.Devices.RemoveRange(oldCluster.devices);
+                    _dataContext.RemoveRange(oldCluster.devices);
+                    _dataContext.SaveChanges();
                 }
 
-                _dataContext.ArasakaClusters.Remove(oldCluster);
+                _dataContext.Remove(oldCluster);
+                _dataContext.SaveChanges();
             }
 
-            _dataContext.ArasakaClusters.Add(newCluster);
+            _dataContext.Add(newCluster);
             _dataContext.SaveChanges();
         }
 

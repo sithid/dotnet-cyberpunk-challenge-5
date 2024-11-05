@@ -12,7 +12,7 @@ using dotnet_cyberpunk_challenge_5.Controllers;
 namespace dotnet_cyberpunk_challenge_5.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241105005352_init")]
+    [Migration("20241105030032_init")]
     partial class init
     {
         /// <inheritdoc />

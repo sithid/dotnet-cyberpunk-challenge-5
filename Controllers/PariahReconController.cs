@@ -45,9 +45,9 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
 
                     if (newClusters != null)
                     {
-                        foreach (ArasakaCluster singleCluster in newClusters)
+                        foreach (var c in newClusters)
                         {
-                            await _dataRepository.UpdateData(singleCluster);
+                            await _dataRepository.UpdateData(c);
                         }
 
                         return Ok(newClusters);
@@ -82,7 +82,7 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
                     if (updatedCluster == null)
                         return NotFound();
 
-                    await _dataRepository.UpdateData(_dataRepository.BuildArasakaCluster(updatedCluster));
+                    await _dataRepository.UpdateData(updatedCluster);
 
                     return Ok(updatedCluster);
                 }
