@@ -4,10 +4,10 @@ using dotnet_cyberpunk_challenge_5.Repositories;
 using dotnet_cyberpunk_challenge_5.Repositories.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.Json;
-using Newtonsoft.Json;
 using System.Collections.Immutable;
 using System.Diagnostics.Metrics;
 using System.Linq.Expressions;
@@ -30,15 +30,30 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
 
             pariahClient = new HttpClient();
             pariahClient.BaseAddress = new Uri("http://pariah-nexus.blackcypher.io");
-            pariahClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            //pariahClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
         }
+
+        /* Secretes Learned
+         * 
+         * clusterId: 42
+         * clusterName: Cluster-42
+         * publicKey: VGhlIEFkbWluIGVuZHBvaW50IGlzIDxVUkw+L2FwaS9OZXRSdW5uZXJBZG1pbmlzdHJhdGlvbg==
+         *  base64 Decoded: The Admin endpoint is <URL>/api/NetRunnerAdministration
+         * 
+         * clusterId: 30
+         * clusterName: Cluster-30
+         * athenaAccessKey: 7f1b4a78f59a18bf6a216c2173e0de3c
+         *  access: authorized
+         *  requestUrl: http://pariah-nexus.blackcypher.io/api/ArasakaAthenaDataEvent?athenaKey=7f1b4a78f59a18bf6a216c2173e0de3c
+         * 
+         */
 
         [HttpGet("GetAllClusterData")]
         public async Task<ActionResult<IEnumerable<ArasakaCluster>>> GetAllClusterData()
         {
             try
             {
-                var clusterListReponse = pariahClient.GetAsync("api/ArasakaCluster").Result;
+                var clusterListReponse = await pariahClient.GetAsync("api/ArasakaCluster");
 
                 if (clusterListReponse.IsSuccessStatusCode)
                 {
@@ -52,7 +67,7 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
                         {
                             if (lazyCluster != null)
                             {
-                                var clusterIdResponse = pariahClient.GetAsync($"api/ArasakaCluster/{lazyCluster.id}").Result;
+                                var clusterIdResponse = await pariahClient.GetAsync($"api/ArasakaCluster/{lazyCluster.id}");
 
                                 if (clusterIdResponse.IsSuccessStatusCode)
                                 {
@@ -160,6 +175,31 @@ namespace dotnet_cyberpunk_challenge_5.Controllers
             catch (Exception ex)
             {
                 return BadRequest($"Something went wrong: {ex.Message}");
+            }
+        }
+
+        [HttpGet("GetSingleDeviceById/{id}")]
+        public async Task<ActionResult<Device>> GetSingleDeviceById( int id )
+        {
+            try
+            {
+                var deviceIdResponse = await pariahClient.GetAsync($"api/ArasakaDevice/{id}");
+
+                if (deviceIdResponse.IsSuccessStatusCode)
+                {
+                    var device = deviceIdResponse.Content.ReadFromJsonAsync<Device>().Result;
+
+                    if (device == null)
+                        return NotFound("There was no device with that id found.");
+
+                    return Ok(device);
+                }
+                else
+                    return BadRequest(deviceIdResponse.StatusCode);
+            }
+            catch( Exception ex )
+            {
+                return BadRequest(ex);
             }
         }
     }
