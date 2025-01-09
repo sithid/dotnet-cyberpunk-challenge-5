@@ -1,4 +1,6 @@
-﻿namespace dotnet_cyberpunk_challenge_5.Models
+﻿using System.Text.Json.Serialization;
+
+namespace dotnet_cyberpunk_challenge_5.Models
 {
     public class ArasakaDeviceMemoryMapping
     {
@@ -14,5 +16,8 @@
         public bool memoryHeatSpreader {  get; set; }
         public int memoryWarrantyYears {  get; set; }
         public int deviceId {  get; set; }
+
+        [JsonIgnore]
+        public ArasakaDevice device { get; set; }
     }
 }

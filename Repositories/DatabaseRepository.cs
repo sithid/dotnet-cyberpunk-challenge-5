@@ -95,7 +95,6 @@ namespace dotnet_cyberpunk_challenge_5.Repositories
                 environment = clusterToCopy.environment,
                 kubernetesVersion = clusterToCopy.kubernetesVersion,
                 region = clusterToCopy.region,
-                devices = clusterToCopy.devices,
             };
 
             if (clusterToCopy.devices != null)

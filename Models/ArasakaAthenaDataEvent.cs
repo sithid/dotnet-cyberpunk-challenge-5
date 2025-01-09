@@ -1,4 +1,6 @@
-﻿namespace dotnet_cyberpunk_challenge_5.Models
+﻿using System.Text.Json.Serialization;
+
+namespace dotnet_cyberpunk_challenge_5.Models
 {
     public class ArasakaAthenaDataEvent
     {
@@ -22,5 +24,8 @@
         public float responseTime {  get; set; }
         public bool success {  get; set; }
         public int deviceId {  get; set; }
+
+        [JsonIgnore]
+        public ArasakaDevice device { get; set; }
     }
 }
